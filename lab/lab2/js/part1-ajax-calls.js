@@ -1,11 +1,22 @@
 /**
  * Using ajax, download some data from a remote server and log it to the console
  */
+var placeHolder;
+
+var capital = $.ajax("https://raw.githubusercontent.com/CPLN-692-401/datasets/master/json/world-country-capitals.json");
+
+capital.then(function(res){
+  placeHolder = JSON.parse(res);
+  //console.log(placeHolder);
+  addMarkers(map,placeHolder);
+});
 
 
-
-
-
+var addMarkers = function(map,data) {
+  for(i = 0; i < placeHolder.length; i++){
+      L.marker([data[i].CapitalLatitude,data[i].CapitalLongitude]).addTo(map).bindPopup(data[i].CapitalName);
+    }
+};
 
 
 
@@ -22,4 +33,3 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
 }).addTo(map);
 
 // L.terminator().addTo(map)
-

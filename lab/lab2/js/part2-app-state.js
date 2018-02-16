@@ -33,16 +33,35 @@
 ===================== */
 
 // Use the data source URL from lab 1 in this 'ajax' function:
-var downloadData = $.ajax("http://");
+var downloadData = $.ajax('https://raw.githubusercontent.com/CPLN-692-401/datasets/master/json/world-country-capitals.json');
 
 // Write a function to prepare your data (clean it up, organize it as you like, create fields, etc)
-var parseData = function() {};
+var parseData = function(data) {
+  var placeHolder = JSON.parse(data);
+  return placeHolder;
+//return JSON.parse(data);
+};
 
 // Write a function to use your parsed data to create a bunch of marker objects (don't plot them!)
-var makeMarkers = function() {};
+var makeMarkers = function(data) {
+  var collection = [];
+  for(i = 0; i < data.length; i++){
+    var marker = L.marker([data[i].CapitalLatitude,data[i].CapitalLongitude]);
+    collection.push(marker) ;
+  }
+  return collection;
+
+//return _.map(data, function(each){return L.marker([each.CapitalLatitude, each.CapitalLongitude]);});
+
+};
+
 
 // Now we need a function that takes this collection of markers and puts them on the map
-var plotMarkers = function() {};
+var plotMarkers = function(markers) {
+  for(i = 0; i < markers.length; i++){
+   markers[i].addTo(map);
+  }
+};
 
 // At this point you should see a bunch of markers on your map.
 // Don't continue on until you can make them appear!
@@ -61,7 +80,11 @@ var plotMarkers = function() {};
 ===================== */
 
 // Look to the bottom of this file and try to reason about what this function should look like
-var removeMarkers = function() {};
+var removeMarkers = function(markers) {
+  for(i = 0; i < markers.length; i++){
+   map.removeLayer(markers[i]);
+  }
+};
 
 /* =====================
   Optional, stretch goal
@@ -77,7 +100,7 @@ var removeMarkers = function() {};
 
 var map = L.map('map', {
   center: [39.9522, -75.1639],
-  zoom: 14
+  zoom: 2
 });
 var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.{ext}', {
   attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
